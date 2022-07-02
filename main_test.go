@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// benchmarks the IsAllowed function
 func BenchmarkIsAllowed(b *testing.B) {
 	b.StopTimer()
 
@@ -22,6 +23,7 @@ func BenchmarkIsAllowed(b *testing.B) {
 	}
 }
 
+// internal, loads a robots.txt file for use
 func useOne() (RobotList, error) {
 	f, err := os.Open("./examples/t.txt")
 	if err != nil {
@@ -36,6 +38,7 @@ func useOne() (RobotList, error) {
 	return s, nil
 }
 
+// tests whether the IsAllowed function properly determines match strings
 func TestIsAllowed(t *testing.T) {
 	s, err := useOne()
 	if err != nil {
@@ -50,10 +53,39 @@ func TestIsAllowed(t *testing.T) {
 	}
 }
 
+// tests whether the parse function successfully parses a robots.txt file
 func TestParse(t *testing.T) {
-	_, err := useOne()
+	s, err := useOne()
 	if err != nil {
 		t.Log(err)
 		t.Fail()
+	}
+
+	proper := RobotList{
+		robots: map[string]Robot{
+			"*": {
+				Allowed: map[string]bool{
+					"/user/*":   true,
+					"/private/": false,
+				},
+			},
+		},
+		sitemaps: []string{"https://example.com/"},
+	}
+
+	for k := range proper.robots {
+		if ent, ok := proper.robots[k]; ok {
+			for kk, vv := range ent.Allowed {
+				if s.robots[k].Allowed[kk] != vv {
+					t.Fail()
+				}
+			}
+		}
+	}
+
+	for i, v := range proper.sitemaps {
+		if s.sitemaps[i] != v {
+			t.Fail()
+		}
 	}
 }

@@ -1,0 +1,3 @@
+Allow: /user/*
+Disallow: /private/
+Sitemap: https://example.com/
