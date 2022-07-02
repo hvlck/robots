@@ -6,6 +6,22 @@ import (
 	"testing"
 )
 
+func BenchmarkIsAllowed(b *testing.B) {
+	b.StopTimer()
+
+	s, err := useOne()
+	if err != nil {
+		b.Log(err)
+		b.Fail()
+	}
+
+	b.StartTimer()
+	priv := s.IsAllowed("/private/", "*")
+	if priv != false {
+		b.Fail()
+	}
+}
+
 func useOne() (RobotList, error) {
 	f, err := os.Open("./examples/t.txt")
 	if err != nil {
