@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-// IsAllowed checks whether a given *url* is allowed to be scraped for a given RobotList
-// the agent corresponds to the User-Agent string
-// will return false is there is no valid User-Agent within the RobotList
+// IsAllowed checks whether a given *url* is allowed to be scraped for a given RobotList.
+// The agent corresponds to the User-Agent string.
+// Will return false is there is no valid User-Agent within the RobotList.
 func (r *RobotList) IsAllowed(url, agent string) bool {
 	// matches?
 	m := true
@@ -92,20 +92,20 @@ func (r *RobotList) IsAllowed(url, agent string) bool {
 	}
 }
 
-// Robot is a list of disallowed/allowed URLs for a given user-agent, as well as the crawl delay, given in seconds
+// List of disallowed/allowed URLs for a given user-agent, as well as the crawl delay, given in seconds
 type Robot struct {
 	Allowed    map[string]bool
 	CrawlDelay uint8
 }
 
-// RobotList is a list of allowed user agents and sitemaps for a provided `robots.txt` file
+// List of allowed user agents and sitemaps for a provided `robots.txt` file
 type RobotList struct {
 	robots   map[string]Robot
 	sitemaps []string
 }
 
-// parse parses a robots.txt file and generates a list of user agents and sitemaps
-func parse(r *bufio.Reader) (RobotList, error) {
+// Parses a robots.txt file and generates a list of user agents and sitemaps
+func Parse(r *bufio.Reader) (RobotList, error) {
 	rob := RobotList{
 		robots: make(map[string]Robot),
 	}

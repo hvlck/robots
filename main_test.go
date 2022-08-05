@@ -31,7 +31,7 @@ func useOne() (RobotList, error) {
 	}
 
 	b := bufio.NewReader(f)
-	s, err := parse(b)
+	s, err := Parse(b)
 	if err != nil {
 		return RobotList{}, err
 	}
